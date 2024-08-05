@@ -3,9 +3,10 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    , ui(new Ui::WeatherRep)
 {
     ui->setupUi(this);
+    QWidget::setWindowTitle("Weather");
     manager = new QNetworkAccessManager(this);
     connect(manager, &QNetworkAccessManager::finished, this, &MainWindow::onResult);
     updateTimer = new QTimer(this);
@@ -26,7 +27,6 @@ void MainWindow::getWeather(const QString &city){
 }
 
 void MainWindow::onResult(QNetworkReply *reply){
-    ui->hourlyTemps->clear();
     if (reply->error() == QNetworkReply::NoError) {
         QJsonDocument doc = QJsonDocument::fromJson(reply->readAll());
         QJsonObject obj = doc.object();
@@ -43,9 +43,27 @@ void MainWindow::weatherUpdated(double temperature, QString weather, QString des
     QString hourlyTemp;
     ui->Temperature->setText(QString::number(temperature) + " °C");
     ui->Weather->setText(weather);
+    if (weather == "Rain" || weather == "Thunderstorm"){
+        ui->frame->setStyleSheet("background-image: url(:/backgrounds/images/rainy.png);");
+    }
+    else if (weather == "Clear"){
+        ui->frame->setStyleSheet("background-image: url(:/backgrounds/images/sunny.png);");
+    }
+    else if (weather == "Snow"){
+        ui->frame->setStyleSheet("background-image: url(:/backgrounds/images/snow.png);");
+    }
+    else if (weather == "Clouds"){
+        ui->frame->setStyleSheet("background-image: url(:/backgrounds/images/cloudy.jpg);;");
+    }
 }
 
 void MainWindow::on_lineEdit_editingFinished()
+{
+    getWeather(ui->lineEdit->text());
+}
+
+
+void MainWindow::on_pushButton_clicked()
 {
     getWeather(ui->lineEdit->text());
 }
