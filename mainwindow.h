@@ -13,7 +13,7 @@
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
-class MainWindow;
+class WeatherRep;
 }
 QT_END_NAMESPACE
 
@@ -29,11 +29,13 @@ public:
 private slots:
     void on_lineEdit_editingFinished();
 
+    void on_pushButton_clicked();
+
 private:
     QTimer *updateTimer;
     void onResult(QNetworkReply *reply);
     void weatherUpdated(double temperature, QString weather, QString description);
     QNetworkAccessManager* manager;
-    Ui::MainWindow *ui;
+    Ui::WeatherRep *ui;
 };
 #endif // MAINWINDOW_H
