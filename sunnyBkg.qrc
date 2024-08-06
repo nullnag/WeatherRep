@@ -1,5 +1,0 @@
-<RCC>
-    <qresource prefix="/sunnyBkg">
-        <file>images/sunny.jpg</file>
-    </qresource>
-</RCC>
