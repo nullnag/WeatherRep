@@ -1,9 +1,0 @@
-<RCC>
-    <qresource prefix="/backgrounds">
-        <file>images/night.png</file>
-        <file>images/rainy.png</file>
-        <file>images/snow.png</file>
-        <file>images/sunny.png</file>
-        <file>images/cloudy.jpg</file>
-    </qresource>
-</RCC>
