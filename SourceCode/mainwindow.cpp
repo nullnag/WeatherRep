@@ -11,13 +11,29 @@ MainWindow::MainWindow(QWidget *parent)
     connect(manager, &QNetworkAccessManager::finished, this, &MainWindow::onResult);
     updateTimer = new QTimer(this);
     connect(updateTimer, &QTimer::timeout, this, &MainWindow::on_lineEdit_editingFinished);
+
+    trayIcon = new QSystemTrayIcon(QIcon(":/images/icon.png"), this);
+    trayMenu = new QMenu(this);
+    QAction *quitAction = new QAction("Выход", this);
+    QAction *restoreAction = new QAction("Показать окно", this);
+    trayMenu->addAction(restoreAction);
+    trayMenu->addAction(quitAction);
+    trayIcon->setContextMenu(trayMenu);
+
+    connect(quitAction, &QAction::triggered, qApp, &QApplication::quit);
+    connect(restoreAction, &QAction::triggered, this, &MainWindow::show);
+    trayIcon->show();
     updateTimer->start(10000);
 }
 
 MainWindow::~MainWindow()
 {
+    delete trayIcon;
+    delete trayMenu;
     delete ui;
 }
+
+
 
 void MainWindow::getWeather(const QString &city){
     QString apiKey = "46bd3b92e0dacd1e2839888b6194db6e";
@@ -40,7 +56,7 @@ void MainWindow::onResult(QNetworkReply *reply){
 }
 
 void MainWindow::weatherUpdated(double temperature, QString weather, QString description){
-    QString hourlyTemp;
+    trayIcon->setToolTip(QString::number(temperature) + " °C \n" + weather);
     ui->Temperature->setText(QString::number(temperature) + " °C");
     ui->Weather->setText(weather);
     if (weather == "Rain" || weather == "Thunderstorm"){

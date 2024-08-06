@@ -6,4 +6,7 @@
         <file>images/sunny.png</file>
         <file>images/cloudy.jpg</file>
     </qresource>
+    <qresource prefix="/">
+        <file>images/icon.png</file>
+    </qresource>
 </RCC>

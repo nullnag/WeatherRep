@@ -10,6 +10,10 @@
 #include <QVector>
 #include <QListWidgetItem>
 #include <QTimer>
+#include <QAction>
+#include <QMenu>
+#include <QSystemTrayIcon>
+#include <QCloseEvent>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -32,10 +36,20 @@ private slots:
     void on_pushButton_clicked();
 
 private:
+    QMenu *trayMenu;
     QTimer *updateTimer;
+    QSystemTrayIcon* trayIcon;
     void onResult(QNetworkReply *reply);
     void weatherUpdated(double temperature, QString weather, QString description);
     QNetworkAccessManager* manager;
     Ui::WeatherRep *ui;
+protected:
+    void closeEvent(QCloseEvent *event) override{
+        if (trayIcon->isVisible())
+            hide();
+        event->ignore();
+    }
 };
+
+
 #endif // MAINWINDOW_H
